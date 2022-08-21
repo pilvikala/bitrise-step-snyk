@@ -1,5 +1,5 @@
 title: |-
-  Snyk
+  Test with Snyk
 summary: |
   Bitrise Snyk Step incorporates Snyk into your Bitrise workflows
 description: |
@@ -13,11 +13,11 @@ support_url: https://github.com/pilvikala/bitrise-step-snyk/issues
 
 project_type_tags:
   - android
+  - ios
   - react-native
 
 type_tags:
   - utility
-  - security
 
 toolkit:
   bash:
@@ -55,28 +55,28 @@ inputs:
         - "medium"
         - "high"
         - "critical"
-  - fail_on_issues: "true"
+  - fail_on_issues: "yes"
     opts:
       title: "Fail on issues"
       summary: "Specifies whether to fail the build or not based on the results found by Snyk."
       description: |
         Specifies whether to fail the build or not based on the results found by Snyk.
 
-        Snyk by default returns an error code from the test command. This may break your Bitrise workflow. By specifying `false`, the build can continue even if vulnerabilities are found.
+        Snyk by default returns an error code from the test command. This may break your Bitrise workflow. By specifying `no`, the build can continue even if vulnerabilities are found.
       value_options:
-        - "true"
-        - "false"
-  - monitor: "false"
+        - "yes"
+        - "no"
+  - monitor: "no"
     opts:
       title: "Monitor (import to Snyk)"
       summary: "If enabled, imports the snapshot of dependencies to Snyk for continuous monitoring after a successful test."
       description: |
         If enabled, imports the snapshot of dependencies to Snyk for continuous monitoring after a successful test.
 
-        Set this value to `true` to import the snapshot of dependencies to Snyk after a successful test. Snyk will then start monitoring the dependencies for new vulnerabilities and alert when a new vulnerability is discovered.
+        Set this value to `yes` to import the snapshot of dependencies to Snyk after a successful test. Snyk will then start monitoring the dependencies for new vulnerabilities and alert when a new vulnerability is discovered.
       value_options:
-        - "false"
-        - "true"
+        - "no"
+        - "yes"
   - target_file:
     opts:
       title: "Target file"
