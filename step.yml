@@ -81,7 +81,7 @@ inputs:
     opts:
       title: "Target file"
       summary: "The path to the manifest file to be used by Snyk. Should be provided if non-standard."
-      description: ""
+      description: "The path to the manifest file to be used by Snyk. Should be provided if non-standard."
   - organization:
     opts:
       title: "Organization"
