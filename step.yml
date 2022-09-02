@@ -66,6 +66,17 @@ inputs:
       value_options:
         - "yes"
         - "no"
+  - create_report: "no"
+    opts:
+      title: "Create HTML Report"
+      summary: "Specifies whether to create an HTML report"
+      description: |
+        Specifies whether to create an HTML report.
+
+        If set to `yes`, an HTML report will be created and available as a build artifact
+      value_options:
+        - "yes"
+        - "no"
   - monitor: "no"
     opts:
       title: "Monitor (import to Snyk)"
