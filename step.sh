@@ -15,6 +15,7 @@ packages="snyk"
 
 if [[ "${create_report}" == "yes" ]]; then
   packages="snyk snyk-to-html"
+  export SNYK_REPORT_PATH="${PWD}/snyk_report.html"
 fi
 
 npm install --location=global ${packages}
@@ -29,7 +30,6 @@ fi
 
 target_file_arg=""
 org_arg=""
-create_report_arg=""
 
 [[ ! -z "$target_file" ]] && target_file_arg="--file=${target_file}"
 [[ ! -z "$organization" ]] && org_arg="--org=${organization}"

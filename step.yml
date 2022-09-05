@@ -106,3 +106,8 @@ inputs:
       title: "Additional arguments"
       summary: "Refer to the Snyk CLI help page for information on additional arguments."
       description: "Refer to the Snyk CLI help page for information on additional arguments."
+
+outputs:
+  - SNYK_REPORT_PATH: null
+    opts:
+      title: The path to the file with HTML report (if generated)
