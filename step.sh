@@ -5,7 +5,7 @@ set -o pipefail
 run_test()
 {
   if [[ "$3" == "yes" ]]; then
-    snyk $1 --severity-threshold=$2 $4 $5 --json | snyk-to-html -o snyk_report.html
+    snyk $1 --severity-threshold=$2 $4 $5 --json | snyk-to-html -o $BITRISE_DEPLOY_DIR/snyk_report.html
   else
     snyk $1 --severity-threshold=$2 $4 $5
   fi
