@@ -16,6 +16,13 @@ run_test()
   fi
 }
 
+if [[ ${command} != "test_this_step" ]]; then
+  snyk auth ${auth_token}
+else
+  ./run_tests.sh
+  exit $?
+fi
+
 packages="snyk"
 
 if [[ "${create_report}" == "yes" ]]; then
@@ -23,14 +30,6 @@ if [[ "${create_report}" == "yes" ]]; then
 fi
 
 npm install --location=global ${packages}
-
-if [[ ${command} != "test_this_step" ]]; then
-  snyk auth ${auth_token}
-else
-  snyk -v
-  snyk help
-  exit 0
-fi
 
 target_file_arg=""
 org_arg=""
