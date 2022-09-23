@@ -5,6 +5,64 @@ Bitrise Snyk Step incorporates Snyk into your Bitrise workflows. By utilizing th
 
 ## How to use this Step
 
+### Add this step in Bitrise Workflow Editor
+
+This step uses Snyk CLI and `snyk-to-html` to test your code, dependencies, and report results either to Bitrise or Snyk. The following configuration options are avialable:
+
+- Auth Token
+
+  Your Snyk authentication token (see https://app.snyk.io/account). This should be set in Secrets using the `SNYK_AUTH_TOKEN `variable.
+
+- Command (default `test`)
+
+  This is the CLI command to run with Snyk.
+
+- Severity threshold (default `low`)
+
+   Only report vulnerabilities of the provided level or higher (low/medium/high/critical).
+
+- Fail on issues (default `yes`)
+   
+   Specifies whether to fail the build or not based on the results found by Snyk.
+
+   Snyk by default returns an error code from the test command. This may break your Bitrise workflow. By specifying `no`, the build can continue even if vulnerabilities are found.
+
+- Create HTML Report  (default `no`)
+
+   Specifies whether to create an HTML report.
+
+   If set to `yes`, an HTML report will be created and available as a build artifact
+
+- Monitor (default `no`)
+
+   If enabled, imports the snapshot of dependencies to Snyk for continuous monitoring after a successful test.
+
+   Set this value to `yes` to import the snapshot of dependencies to Snyk after a successful test. Snyk will then start monitoring the dependencies for new vulnerabilities and alert when a new vulnerability is discovered.
+      
+- Target file
+   
+   The path to the manifest file to be used by Snyk. Should be provided if non-standard.
+
+- Organization:
+
+   Name of the Snyk organisation name, under which this project should be tested and monitored.
+
+   If omitted the default organization will be used.
+
+- Additional arguments:
+
+   You can provide additional arguments to pass to Snyk CLI. Refer to the Snyk CLI help page for information on additional arguments.
+
+### Testing your project dependencies (`snyk test` command)
+
+Refer to Snyk documentation for the list of supported languages and package managers. You can use the step with default settings. Consider adding `--all-projects` as an additional argument if you want to scan a monorepo.
+
+### Static code analysis (Snyk code test command)
+
+Refer to Snyk documentation for the list of supported languages and package managers. To test using Snyk Code, specify the `command` option as `code test`.
+
+### CLI
+
 Can be run directly with the [bitrise CLI](https://github.com/bitrise-io/bitrise),
 just `git clone` this repository, `cd` into it's folder in your Terminal/Command Line
 and call `bitrise run test`.
@@ -27,39 +85,8 @@ An example `.bitrise.secrets.yml` file:
 
 ```
 envs:
-- A_SECRET_PARAM_ONE: the value for secret one
-- A_SECRET_PARAM_TWO: the value for secret two
+- SNYK_AUTH_TOKEN: your_Snyk_authentication_token
 ```
-
-## How to create your own step
-
-1. Create a new git repository for your step (**don't fork** the *step template*, create a *new* repository)
-2. Copy the [step template](https://github.com/bitrise-steplib/step-template) files into your repository
-3. Fill the `step.sh` with your functionality
-4. Wire out your inputs to `step.yml` (`inputs` section)
-5. Fill out the other parts of the `step.yml` too
-6. Provide test values for the inputs in the `bitrise.yml`
-7. Run your step with `bitrise run test` - if it works, you're ready
-
-__For Step development guidelines & best practices__ check this documentation: [https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md](https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md).
-
-**NOTE:**
-
-If you want to use your step in your project's `bitrise.yml`:
-
-1. git push the step into it's repository
-2. reference it in your `bitrise.yml` with the `git::PUBLIC-GIT-CLONE-URL@BRANCH` step reference style:
-
-```
-- git::https://github.com/user/my-step.git@branch:
-   title: My step
-   inputs:
-   - my_input_1: "my value 1"
-   - my_input_2: "my value 2"
-```
-
-You can find more examples of step reference styles
-in the [bitrise CLI repository](https://github.com/bitrise-io/bitrise/blob/master/_examples/tutorials/steps-and-workflows/bitrise.yml#L65).
 
 ## How to contribute to this Step
 
@@ -75,19 +102,3 @@ in the [bitrise CLI repository](https://github.com/bitrise-io/bitrise/blob/maste
   * direct git URL format: instead of `- original-step-id:` use `- git::https://github.com/user/step.git@branch:`
   * You can find more example of alternative step referencing at: https://github.com/bitrise-io/bitrise/blob/master/_examples/tutorials/steps-and-workflows/bitrise.yml
 7. Once you're done just commit your changes & create a Pull Request
-
-
-## Share your own Step
-
-You can share your Step or step version with the [bitrise CLI](https://github.com/bitrise-io/bitrise). If you use the `bitrise.yml` included in this repository, all you have to do is:
-
-1. In your Terminal / Command Line `cd` into this directory (where the `bitrise.yml` of the step is located)
-1. Run: `bitrise run test` to test the step
-1. Run: `bitrise run audit-this-step` to audit the `step.yml`
-1. Check the `share-this-step` workflow in the `bitrise.yml`, and fill out the
-   `envs` if you haven't done so already (don't forget to bump the version number if this is an update
-   of your step!)
-1. Then run: `bitrise run share-this-step` to share the step (version) you specified in the `envs`
-1. Send the Pull Request, as described in the logs of `bitrise run share-this-step`
-
-That's all ;)
