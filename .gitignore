@@ -3,8 +3,6 @@
 .vscode
 README.md.backup
 _tmp/
-yarn.lock
-package.json
-package-lock.json
 .dccache
 snyk_report.html
+.env

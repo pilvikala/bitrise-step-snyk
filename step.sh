@@ -4,12 +4,24 @@ set -o pipefail
 
 run_test()
 {
-  if [[ "$3" == "yes" ]]; then
-    snyk $1 --severity-threshold=$2 $4 $5 --json | snyk-to-html -o $BITRISE_DEPLOY_DIR/snyk_report.html
+  command=$1
+  sev_threshold=$2
+  create_report=$3
+  target_file_arg=$4
+  additional_arguments=$5
+  if [[ "$create_report" == "yes" ]]; then
+    snyk $command --severity-threshold=$sev_threshold $target_file_arg $additional_arguments --json | snyk-to-html -o $BITRISE_DEPLOY_DIR/snyk_report.html
   else
-    snyk $1 --severity-threshold=$2 $4 $5
+    snyk $command --severity-threshold=$sev_threshold $target_file_arg $additional_arguments
   fi
 }
+
+if [[ ${command} != "test_this_step" ]]; then
+  snyk auth ${auth_token}
+else
+  ./run_tests.sh
+  exit $?
+fi
 
 packages="snyk"
 
@@ -19,14 +31,6 @@ fi
 
 npm install --location=global ${packages}
 
-if [[ ${command} != "test_this_step" ]]; then
-  snyk auth ${auth_token}
-else
-  snyk -v
-  snyk help
-  exit 0
-fi
-
 target_file_arg=""
 org_arg=""
 
@@ -34,9 +38,9 @@ org_arg=""
 [[ ! -z "$organization" ]] && org_arg="--org=${organization}"
 
 if [[ "${fail_on_issues}" == "yes" ]]; then
-    run_test ${command} ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments}
+    run_test "${command}" ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments}
 else
-    run_test ${command} ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments} || true
+    run_test "${command}" ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments} || true
 fi
 
 if [[ "${monitor}" == "yes" ]]; then
