@@ -16,6 +16,8 @@ This step uses Snyk CLI and `snyk-to-html` to test your code, dependencies, and 
 - Command (default `test`)
 
   This is the CLI command to run with Snyk.
+  
+  To run static analysis (Snyk Code), specify the command as `code test`. 
 
 - Severity threshold (default `low`)
 

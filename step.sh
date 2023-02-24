@@ -16,9 +16,7 @@ run_test()
   fi
 }
 
-if [[ ${command} != "test_this_step" ]]; then
-  snyk auth ${auth_token}
-else
+if [[ ${command} = "test_this_step" ]]; then
   ./run_tests.sh
   exit $?
 fi
@@ -33,6 +31,8 @@ npm install --location=global ${packages}
 
 target_file_arg=""
 org_arg=""
+
+snyk auth ${auth_token}
 
 [[ ! -z "$target_file" ]] && target_file_arg="--file=${target_file}"
 [[ ! -z "$organization" ]] && org_arg="--org=${organization}"
