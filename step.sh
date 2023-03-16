@@ -16,7 +16,11 @@ run_test()
   fi
 }
 
-if [[ ${command} = "test_this_step" ]]; then
+command_to_use=$command
+
+if [[ -z "$command" ]]; then command_to_use="test"; fi
+
+if [[ ${command_to_use} = "test_this_step" ]]; then
   ./run_tests.sh
   exit $?
 fi
@@ -38,9 +42,9 @@ snyk auth ${auth_token}
 [[ ! -z "$organization" ]] && org_arg="--org=${organization}"
 
 if [[ "${fail_on_issues}" == "yes" ]]; then
-    run_test "${command}" ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments}
+    run_test "${command_to_use}" ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments}
 else
-    run_test "${command}" ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments} || true
+    run_test "${command_to_use}" ${severity_threshold} ${create_report} ${target_file_arg} ${additional_arguments} || true
 fi
 
 if [[ "${monitor}" == "yes" ]]; then
