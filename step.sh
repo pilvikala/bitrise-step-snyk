@@ -31,7 +31,7 @@ if [[ "${create_report}" == "yes" ]]; then
   packages="snyk snyk-to-html"
 fi
 
-npm install --location=global ${packages}
+npm install -g ${packages}
 
 target_file_arg=""
 org_arg=""
